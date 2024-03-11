@@ -10,17 +10,22 @@ covid_year_week_level_df <- gen_year_week_level_df(covid_day_level_df)
 
 # SHINY FRONT END --------------------------------------------------------------
 ui <- fluidPage(
-  sliderInput("date_input", 
-              "Select date range",
-              value = c(min(covid_year_week_level_df$week_to_plot),
-                        max(covid_year_week_level_df$week_to_plot)),
-              min = min(covid_year_week_level_df$week_to_plot),
-              max = max(covid_year_week_level_df$week_to_plot),
-              step = 30,
-              width = "400px",
-              timeFormat = "%b %Y"),
+  sliderInput(
+    "date_input", 
+    "Select date range",
+    value = c(
+      min(covid_year_week_level_df$week_to_plot),
+      max(covid_year_week_level_df$week_to_plot)
+    ),
+    min = min(covid_year_week_level_df$week_to_plot),
+    max = max(covid_year_week_level_df$week_to_plot),
+    step = 30,
+    width = "400px",
+    timeFormat = "%b %Y"
+  ),
   plotlyOutput("covid_week_level_plot", width = "100%", height = "600px")
 )
+
 
 # SHINY BACK END ---------------------------------------------------------------
 server <- function(input, output, session) {
@@ -35,8 +40,7 @@ server <- function(input, output, session) {
     
     covid_year_week_level_df_to_plot <- covid_year_week_level_df %>% 
       filter(week_to_plot >= min_date_input_plot & week_to_plot <= max_date_input_plot)
-    
-    subtitle <- paste0("Through ", max_date_input_plot)
+
     
     p <- ggplot(covid_year_week_level_df_to_plot) +
       geom_col(aes(x = week_to_plot, y = cases_total),
@@ -57,7 +61,7 @@ server <- function(input, output, session) {
         axis.line.y = element_line(color = "gray"),
         axis.ticks.length.x = unit(0.3, "cm")
       ) + 
-      ggtitle("Weekly COVID-19 Cases", subtitle = subtitle)
+      ggtitle("Weekly COVID-19 Cases")
     
     ggplotly_title <- paste0("Weekly COVID-19 Cases", "<br>",
                              "<sup>", min_date_input_plot, " through ", max_date_input_plot,
