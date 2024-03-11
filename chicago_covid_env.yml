@@ -1,0 +1,7 @@
+name: chicago-covid
+channels: 
+  - conda-forge 
+dependencies: 
+  - r-base=4.3
+  - r-shiny=1.8
+  - r-tidyverse=2.0
